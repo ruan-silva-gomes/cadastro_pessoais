@@ -108,9 +108,9 @@
             <!-- Cabeçalho da tabela -->
             <tr>
                 <th>Cliente</th>
-                <th>Nome Pedido</th>
-                <th>Data Pedido</th>
-                <th>Hora Pedido</th>
+                <th>Nome </th>
+                <th>Data </th>
+                <th>Hora </th>
                 <th>Localização Destino</th>
                 <th>Localização Partida</th>
             </tr>
