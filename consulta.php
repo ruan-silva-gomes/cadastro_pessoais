@@ -1,11 +1,14 @@
+<!-- INICIO DO HTML -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
+    <!-- Configurações e estilos da página -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consulta de Cadastros</title>
     <style>
+        /* Estilos gerais da página */
         body {
             text-align: center;
             font-family: Arial, sans-serif;
@@ -13,6 +16,7 @@
             background-color: #ffffffff;
         }
 
+        /* Container principal */
         .container {
             max-width: 90%;
             margin: 70px auto;
@@ -22,6 +26,7 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
+        /* Barra de navegação */
         .navbar {
             background-color: #333;
             overflow: hidden;
@@ -42,6 +47,7 @@
             font-size: 16px;
         }
 
+        /* Cores dos botões */
         .btn-incluir {
             background-color: #4CAF50;
         }
@@ -58,6 +64,7 @@
             background-color: #ff9800;
         }
 
+        /* Estilização da tabela */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -79,58 +86,37 @@
         tr:nth-child(even) {
             background-color: #f2f2f2;
         }
-
-        .action-btn {
-            text-decoration: none;
-            padding: 5px 10px;
-            color: white;
-            border-radius: 5px;
-            margin: 2px;
-            display: inline-block;
-        }
-
-        .btn-edit {
-            background-color: #2196F3;
-        }
-
-        .btn-delete {
-            background-color: #f44336;
-        }
     </style>
 </head>
 
 <body>
 
+    <!-- BARRA DE NAVEGAÇÃO para acessar outras áreas do sistema -->
+    <!-- BARRA DE NAVEGAÇÃO para acessar outras áreas do sistema -->
     <div class="navbar">
-        <a href="primeira_2026.php" class="btn-incluir">Incluir</a>
-        <a href="alterar.php" class="btn-alterar">Alterar</a>
-        <a href="excluir.php" class="btn-excluir">Excluir</a>
-        <a href="consulta.php" class="btn-consulta">Consulta</a>
+        <a href="primeira_2026.php" class="btn-incluir">Incluir Pessoa</a>
+        <a href="alterar.php" class="btn-alterar">Alterar Pessoa</a>
+        <a href="excluir.php" class="btn-excluir">Excluir Pessoa</a>
+        <a href="pedidos.php" class="btn-incluir">Novo Pedido</a>
+        <a href="consulta.php" class="btn-consulta">Listar Pedidos</a>
     </div>
 
+    <!-- ÁREA DE EXIBIÇÃO: Tabela com resultados da consulta -->
     <div class="container">
-        <h1>Cadastros Realizados</h1>
-
+        <h1>Pedidos</h1>
         <table>
+            <!-- Cabeçalho da tabela -->
             <tr>
-                <th>ID</th>
-                <th>Nome</th>
-                <th>E-mail</th>
-                <th>CPF</th>
-                <th>RG</th>
-                <th>Nascimento</th>
-                <th>Sexo</th>
-                <th>Mãe</th>
-                <th>Pai</th>
-                <th>Nacionalidade</th>
-                <th>Celular</th>
-                <th>Fixo</th>
-                <th>CEP</th>
-                <th>Endereço</th>
-                <th>Cidade</th>
-                <th>Data Inclusão</th>
+                <th>Cliente</th>
+                <th>Nome Pedido</th>
+                <th>Data Pedido</th>
+                <th>Hora Pedido</th>
+                <th>Localização Destino</th>
+                <th>Localização Partida</th>
             </tr>
+
             <?php
+            // Conexão com o banco de dados
             $server = "localhost";
             $user = "root";
             $password = "";
@@ -138,43 +124,34 @@
             $port = "3308";
             $conn = new mysqli($server, $user, $password, $database, $port);
 
+            // Verifica se houve erro na conexão
             if ($conn->connect_error) {
                 die("Falha na conexão: " . $conn->connect_error);
             }
 
-            $sql = "SELECT * FROM cadastro";
+            // EXECUTAR CONSULTA: Seleciona todos os registros da tabela pedidos fazendo JOIN com cadastro
+            $sql = "SELECT pedidos.*, cadastro.nome_cadastro 
+                    FROM pedidos 
+                    LEFT JOIN cadastro ON pedidos.cadastro_idcadastro = cadastro.idcadastro";
             $result = $conn->query($sql);
 
+            // Verifica se há resultados e os exibe linha por linha
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
-                    // Tenta adivinhar o nome da coluna de ID se não for id_cadastro, mas assumirei id_cadastro ou id
-                    // Vou assumir que existe um ID para exclusão. Se o usuário não criou, vai dar erro, mas é o padrão.
-                    // Vou usar 'id_cadastro' pois é o padrão usual quando tabelas chamam 'cadastro'.
-                    // Se der erro o usuário avisa.
-                    $id = isset($row["id_cadastro"]) ? $row["id_cadastro"] : (isset($row["id"]) ? $row["id"] : 0);
-
                     echo "<tr>
-                            <td>" . $row["idcadastro"] . "</td>
                             <td>" . $row["nome_cadastro"] . "</td>
-                            <td>" . $row["email"] . "</td>
-                            <td>" . $row["cpf"] . "</td>
-                            <td>" . $row["rg_cadastro"] . "</td>
-                            <td>" . $row["data_nascimento"] . "</td>
-                            <td>" . $row["sexo_genero"] . "</td>
-                            <td>" . $row["nome_mae"] . "</td>
-                            <td>" . $row["nome_pai"] . "</td>
-                            <td>" . $row["nacionalidade"] . "</td>
-                            <td>" . $row["celular"] . "</td>
-                            <td>" . $row["telefone_fixo"] . "</td>
-                            <td>" . $row["cep"] . "</td>
-                            <td>" . $row["endereco"] . "</td>
-                            <td>" . $row["cidade"] . "</td>
-                            <td>" . $row["data_inclusao"] . "</td>
-                          </tr>";
+                            <td>" . $row["nome_pedido"] . "</td>
+                            <td>" . $row["data_pedido"] . "</td>
+                            <td>" . $row["hora_pedido"] . "</td>
+                            <td>" . $row["loc_destino"] . "</td>
+                            <td>" . $row["loc_partida"] . "</td>
+                        </tr>";
                 }
             } else {
-                echo "<tr><td colspan='5'>Nenhum cadastro encontrado</td></tr>";
+                // Caso não haja registros
+                echo "<tr><td colspan='8'>Nenhum pedido encontrado</td></tr>";
             }
+            // Fecha a conexão com o banco
             $conn->close();
             ?>
         </table>

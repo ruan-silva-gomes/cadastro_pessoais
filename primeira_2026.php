@@ -1,10 +1,13 @@
+<!-- INÍCIO DO HTML: Estrutura básica da página -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
+    <!-- Configurações de metadados e título da página -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Incluir Cadastro</title>
+    <!-- Estilos CSS para formatar a página -->
     <style>
         body {
             text-align: center;
@@ -83,12 +86,16 @@
 
 <body>
 
+
+    <!-- BARRA DE NAVEGAÇÃO: Links para outras páginas do sistema -->
     <div class="navbar">
-        <a href="incluir.php" class="btn-incluir">Incluir</a>
-        <a href="alterar.php" class="btn-alterar">Alterar</a>
-        <a href="excluir.php" class="btn-excluir">Excluir</a>
-        <a href="consulta.php" class="btn-consulta">Consulta</a>
+        <a href="primeira_2026.php" class="btn-incluir">Incluir Pessoa</a>
+        <a href="alterar.php" class="btn-alterar">Alterar Pessoa</a>
+        <a href="excluir.php" class="btn-excluir">Excluir Pessoa</a>
+        <a href="pedidos.php" class="btn-incluir">Novo Pedido</a>
+        <a href="consulta.php" class="btn-consulta">Listar Pedidos</a>
     </div>
+
 
     <div class="container">
         <h1>Incluir Novo Cadastro</h1>
@@ -120,14 +127,19 @@
     </div>
 
     <?php
+    // LÓGICA PHP: Processa o formulário quando enviado via POST
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        // Configurações de conexão com o banco de dados
         $server = "localhost";
         $user = "root";
         $password = "";
         $database = "cadastro";
         $port = "3308";
+
+        // Cria a conexão com o banco
         $conn = new mysqli($server, $user, $password, $database, $port);
 
+        // Recebe os dados do formulário
         $nome = $_POST['nome_cadastro'];
         $cpf = $_POST['cpf'];
         $rg = $_POST['rg_cadastro'];
@@ -144,14 +156,17 @@
         $end = $_POST['endereco'];
         $data = $_POST['data_inclusao'];
 
+        // Prepara a consulta SQL de inserção
         $sql = "INSERT INTO cadastro (nome_cadastro, cpf, rg_cadastro, data_nascimento, sexo_genero, nacionalidade, nome_mae, nome_pai, email, celular, telefone_fixo, cep, cidade, endereco, data_inclusao)
                 VALUES ('$nome', '$cpf', '$rg', '$nasc', '$sexo', '$nac', '$mae', '$pai', '$email', '$cel', '$fixo', '$cep', '$cid', '$end', '$data')";
 
+        // Executa a consulta e verifica se houve sucesso
         if ($conn->query($sql) === TRUE) {
             echo "<p style='color:green;'>Cadastrado com sucesso!</p>";
         } else {
             echo "<p style='color:red;'>Erro: " . $conn->error . "</p>";
         }
+        // Fecha a conexão
         $conn->close();
     }
     ?>
