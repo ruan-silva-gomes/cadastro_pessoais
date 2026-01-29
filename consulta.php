@@ -139,7 +139,7 @@
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
                     echo "<tr>
-                            <td>" . $row["nome_cadastro"] . "</td>
+                            <td>" . $row["nome_cadastro"] . " (ID: " . $row["cadastro_idcadastro"] . ")</td>
                             <td>" . $row["nome_pedido"] . "</td>
                             <td>" . $row["data_pedido"] . "</td>
                             <td>" . $row["hora_pedido"] . "</td>
